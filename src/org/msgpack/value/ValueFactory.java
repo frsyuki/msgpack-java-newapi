@@ -66,6 +66,12 @@ public final class ValueFactory {
         return null;  // TODO
     }
 
+    public static ArrayValue arrayValue(Value[] array) {
+    }
+
+    public static MapValue mapValue(Value[] kvs) {
+    }
+
     public static Value get(Object obj) {
         return null;  // TODO new Unconverter().pack(obj).get()[0];
     }

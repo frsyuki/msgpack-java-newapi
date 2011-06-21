@@ -1,5 +1,7 @@
 
-public interface MessagePack {
+public class MessagePack {
     // TODO
+
+    private MessagePack() { }
 }
 
