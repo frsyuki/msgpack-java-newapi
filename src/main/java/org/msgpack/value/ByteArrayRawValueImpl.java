@@ -20,6 +20,12 @@ package org.msgpack.value;
 import java.util.Arrays;
 
 class ByteArrayRawValueImpl extends AbstractRawValue {
+    private static ByteArrayRawValueImpl emptyInstance = ByteArrayRawValueImpl(new byte[0], true);
+
+    public static RawValue getEmptyInstance() {
+        return emptyInstance;
+    }
+
     private byte[] bytes;
 
     ByteArrayRawValueImpl(byte[] bytes, boolean gift) {

@@ -26,6 +26,12 @@ import java.util.AbstractCollection;
 import java.util.NoSuchElementException;
 
 public class SequentialMapValueImpl extends AbstractMapValue {
+    private static SequentialMapValueImpl emptyInstance = new SequentialMapValueImpl(new Value[0], true);
+
+    public static MapValue getEmptyInstance() {
+        return emptyInstance;
+    }
+
     private Value[] array;
 
     SequentialMapValueImpl(Value[] array, boolean gift) {

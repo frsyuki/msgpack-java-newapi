@@ -33,7 +33,7 @@ public class BufferUnpacker extends AbstractMessagePackUnpacker {
     }
 
     @Override
-    boolean readRemain(int remain) {
+    boolean readFully(byte[] b, int off, int len) throws IOException {
         // TODO
         return true; // or false
     }

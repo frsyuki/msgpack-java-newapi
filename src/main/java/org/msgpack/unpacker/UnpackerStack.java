@@ -18,6 +18,7 @@
 package org.msgpack.unpacker;
 
 import org.msgpack.value.Value;
+import org.msgpack.value.ValueFactory;
 
 final class UnpackerStack {
     private int top;
@@ -25,9 +26,8 @@ final class UnpackerStack {
     private int[] counts;
     private Value[][] objects;
 
-    private static final byte ARRAY_ITEM = 0;
-    private static final byte MAP_KEY = 1;
-    private static final byte MAP_VALUE = 2;
+    private static final byte ARRAY = 0;
+    private static final byte MAP = 1;
 
     public UnpackerStack() {
         this.top = -1;
@@ -52,56 +52,50 @@ final class UnpackerStack {
 
     private void pushArray(int count, Value[] object) {
         top++;
-        types[top] = ARRAY_ITEM;
+        types[top] = ARRAY;
         counts[top] = count;
         objects[top] = object;
     }
 
     private void pushMap(int count, Value[] object) {
         top++;
-        types[top] = MAP_KEY;
-        counts[top] = count;
+        types[top] = MAP;
+        counts[top] = count*2;
         objects[top] = object;
     }
 
     public boolean advance(Value obj) {
-        byte type = bytes[top];
         Value[] arr = objects[top];
         int count = counts[top];
-        if(type == ARRAY_ITEM) {
-            if(arr) {
-                arr[arr.length - count] = obj;
-            }
-            count--;
-            if(count == 0) {
-                return true;
-            } else {
-                counts[top] = count;
-                return false;
-            }
 
-        } else if(type == MAP_KEY) {
-            if(arr) {
-                arr[arr.length - count*2] = obj;
-            }
-            return null;
+        if(arr != null) {
+            arr[arr.length - count] = obj;
+        }
+        count--;
 
+        if(count == 0) {
+            return true;
         } else {
-            if(arr) {
-                arr[arr.length - count*2 + 1] = obj;
-            }
-            count--;
-            if(count == 0) {
-                return true;
-            } else {
-                counts[top] = count;
-                return false;
-            }
+            return false;
         }
     }
 
-    public Value[] getTopObject() {
-        return objects[top];
+    public Value popValue() {
+        Value[] arr = objects[top];
+        Value v;
+        if(arr == null) {
+            // TODO
+            v = ValueFactory.nilValue();
+        } else {
+            byte type = bytes[top];
+            if(type == ARRAY) {
+                v = ValueFactory.arrayValue(arr, true);
+            } else {
+                v = ValueFactory.mapValue(arr, true);
+            }
+        }
+        top--;
+        return v;
     }
 
     public void pop() {

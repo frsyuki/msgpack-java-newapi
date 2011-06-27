@@ -34,7 +34,7 @@ public class StreamUnpacker extends AbstractMessagePackUnpacker {
     }
 
     @Override
-    boolean readRemain(byte[] b, int off, int len) throws IOException {
+    boolean readFully(byte[] b, int off, int len) throws IOException {
         // TODO
         return true;  // always true, otherwise IOException
     }

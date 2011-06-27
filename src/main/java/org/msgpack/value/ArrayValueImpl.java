@@ -22,6 +22,12 @@ import java.util.Iterator;
 import java.util.ListIterator;
 
 class ArrayValueImpl extends AbstractArrayValue {
+    private static ArrayValueImpl emptyInstance = new ArrayValueImpl(new Value[0], true);
+
+    public static ArrayValue getEmptyInstance() {
+        return emptyInstance;
+    }
+
     private Value[] array;
 
     ArrayValueImpl(Value[] array, boolean gift) {

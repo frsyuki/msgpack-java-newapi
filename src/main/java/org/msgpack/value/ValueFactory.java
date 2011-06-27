@@ -60,6 +60,10 @@ public final class ValueFactory {
         return new DoubleValueImpl(v);
     }
 
+    public static RawValue rawValue() {
+        return ByteArrayRawValueImpl.getEmptyInstance();
+    }
+
     public static RawValue rawValue(byte[] b) {
         return rawValue(b, false);
     }
@@ -76,12 +80,28 @@ public final class ValueFactory {
         return new StringRawValueImpl(s);
     }
 
+    public static ArrayValue arrayValue() {
+        return ArrayValueImpl.getEmptyInstance();
+    }
+
     public static ArrayValue arrayValue(Value[] array) {
-        return null;  // TODO
+        return arrayValue(array, false);
+    }
+
+    public static ArrayValue arrayValue(Value[] array, boolean gift) {
+        return new ArrayValueImpl(array, gift);
+    }
+
+    public static MapValue mapValue() {
+        return SequentialMapValueImpl.getEmptyInstance();
     }
 
     public static MapValue mapValue(Value[] kvs) {
-        return null;  // TODO
+        return mapValue(kvs, false);
+    }
+
+    public static MapValue mapValue(Value[] kvs, boolean gift) {
+        return new SequentialMapValueImpl(kvs, gift);
     }
 
     public static Value get(Object obj) {
